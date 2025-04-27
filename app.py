@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
 from mpl_toolkits.mplot3d import Axes3D
+import os
 
 # Set page configuration
 st.set_page_config(
@@ -17,6 +18,61 @@ st.set_page_config(
 # Title and description
 st.title("Mall Customer Purchase Prediction")
 st.markdown("This app predicts whether a customer is likely to make purchases at your mall based on their demographics.")
+
+# Function to check if model exists and create it if it doesn't
+def ensure_model_exists():
+    if not os.path.exists('model.pkl'):
+        st.warning("Model file not found. Creating a new model...")
+        try:
+            # Load data
+            df = pd.read_csv("mall_customers.csv")
+            
+            # Drop CustomerID if present
+            if "CustomerID" in df.columns:
+                df.drop(["CustomerID"], axis=1, inplace=True)
+            
+            # Convert Gender to numerical for modeling
+            df_model = df.copy()
+            df_model['Gender'] = df_model['Gender'].map({'Male': 0, 'Female': 1})
+            
+            # Define features for clustering (all features)
+            X = df_model[['Gender', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']].values
+            
+            # Create and train the model
+            model = KMeans(n_clusters=5, init="k-means++", random_state=42)
+            model.fit(X)
+            
+            # Save the model
+            joblib.dump(model, 'model.pkl')
+            st.success("Model created successfully!")
+            return True
+        except Exception as e:
+            st.error(f"Failed to create model: {e}")
+            return False
+    return True
+
+# Load the model and data
+@st.cache_resource
+def load_model_and_data():
+    try:
+        # First ensure the model file exists
+        model_exists = ensure_model_exists()
+        
+        if not model_exists:
+            return None, None
+            
+        # Try to load the model and data
+        model = joblib.load('model.pkl')
+        df = pd.read_csv("mall_customers.csv")
+        
+        # Drop CustomerID if present
+        if "CustomerID" in df.columns:
+            df.drop(["CustomerID"], axis=1, inplace=True)
+            
+        return model, df
+    except Exception as e:
+        st.error(f"Error loading model or data: {e}")
+        return None, None
 
 # Sidebar for user input
 st.sidebar.header("Customer Information")
@@ -30,45 +86,27 @@ age = st.sidebar.slider("Age", 18, 85, 30)
 # Annual Income slider
 annual_income = st.sidebar.slider("Annual Income (k$)", 15, 150, 50)
 
-# Load the model and data
-@st.cache_resource
-def load_model():
-    try:
-        model = joblib.load('model.pkl')
-        df = pd.read_csv("mall_customers.csv")
-        return model, df
-    except Exception as e:
-        st.error(f"Error loading model or data: {e}")
-        return None, None
-
 # Load the model and dataset
-model, df = load_model()
+model, df = load_model_and_data()
 
 # Function to predict customer segment
 def predict_segment(gender, age, annual_income):
-    # Since KMeans doesn't use gender directly, we'll convert it to numerical
-    # (though it's not used in the prediction directly)
+    # Convert gender to numerical
     gender_num = 0 if gender == "Male" else 1
     
-    # Create input data
-    customer_data = np.array([[age, annual_income, 0]])  # Initial spending score set to 0
+    # Create input data for prediction
+    customer_data = np.array([[gender_num, age, annual_income, 0]])  # Initial spending score set to 0
     
-    # We need to find the cluster this customer belongs to based on age and income
-    # For this example, let's use the 5-cluster model based on age, income, and spending score
-    kmeans = KMeans(n_clusters=5, random_state=42)
-    kmeans.fit(df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']])
-    
-    # Find the closest cluster
-    distances = []
-    for center in kmeans.cluster_centers_:
-        # Compare just age and income
-        dist = np.sqrt((center[0] - age)**2 + (center[1] - annual_income)**2)
-        distances.append(dist)
-    
-    cluster = np.argmin(distances)
+    # Use the model to predict the cluster
+    cluster = model.predict(customer_data)[0]
     
     # Get the average spending score for this cluster
-    cluster_data = df[kmeans.labels_ == cluster]
+    df_model = df.copy()
+    df_model['Gender'] = df_model['Gender'].map({'Male': 0, 'Female': 1})
+    X = df_model[['Gender', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']].values
+    labels = model.predict(X)
+    
+    cluster_data = df[labels == cluster]
     avg_spending_score = cluster_data['Spending Score (1-100)'].mean()
     
     return cluster, avg_spending_score
@@ -133,12 +171,17 @@ if model is not None and df is not None:
             # Create a scatter plot showing clusters and the new customer
             fig, ax = plt.subplots(figsize=(10, 6))
             
-            # Plot existing clusters (only age and income dimensions)
-            clusters = kmeans.fit_predict(df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']])
+            # Convert gender to numerical for visualization
+            df_viz = df.copy()
+            df_viz['Gender_num'] = df_viz['Gender'].map({'Male': 0, 'Female': 1})
+            
+            # Plot existing clusters
+            df_viz['Cluster'] = model.predict(df_viz[['Gender_num', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']].values)
+            
             scatter = ax.scatter(
-                df['Age'], 
-                df['Annual Income (k$)'],
-                c=clusters,
+                df_viz['Age'], 
+                df_viz['Annual Income (k$)'],
+                c=df_viz['Cluster'],
                 alpha=0.6,
                 cmap='viridis'
             )
@@ -162,11 +205,12 @@ if model is not None and df is not None:
     st.header("Customer Segments Overview")
     
     # Perform clustering for visualization
-    kmeans = KMeans(n_clusters=5, random_state=42)
-    df['Cluster'] = kmeans.fit_predict(df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']])
+    df_stats = df.copy()
+    df_stats['Gender_num'] = df_stats['Gender'].map({'Male': 0, 'Female': 1})
+    df_stats['Cluster'] = model.predict(df_stats[['Gender_num', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']].values)
     
     # Show cluster statistics
-    cluster_stats = df.groupby('Cluster').agg({
+    cluster_stats = df_stats.groupby('Cluster').agg({
         'Age': 'mean',
         'Annual Income (k$)': 'mean',
         'Spending Score (1-100)': 'mean',
@@ -189,27 +233,27 @@ if model is not None and df is not None:
     fig = plt.figure(figsize=(10, 6))
     
     if viz_type == "Age vs Spending Score":
-        plt.scatter(df['Age'], df['Spending Score (1-100)'], c=df['Cluster'], cmap='viridis')
+        plt.scatter(df_stats['Age'], df_stats['Spending Score (1-100)'], c=df_stats['Cluster'], cmap='viridis')
         plt.xlabel('Age')
         plt.ylabel('Spending Score (1-100)')
         
     elif viz_type == "Income vs Spending Score":
-        plt.scatter(df['Annual Income (k$)'], df['Spending Score (1-100)'], c=df['Cluster'], cmap='viridis')
+        plt.scatter(df_stats['Annual Income (k$)'], df_stats['Spending Score (1-100)'], c=df_stats['Cluster'], cmap='viridis')
         plt.xlabel('Annual Income (k$)')
         plt.ylabel('Spending Score (1-100)')
         
     elif viz_type == "Age vs Income":
-        plt.scatter(df['Age'], df['Annual Income (k$)'], c=df['Cluster'], cmap='viridis')
+        plt.scatter(df_stats['Age'], df_stats['Annual Income (k$)'], c=df_stats['Cluster'], cmap='viridis')
         plt.xlabel('Age')
         plt.ylabel('Annual Income (k$)')
         
     else:  # 3D visualization
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter(
-            df['Age'], 
-            df['Annual Income (k$)'], 
-            df['Spending Score (1-100)'],
-            c=df['Cluster'],
+            df_stats['Age'], 
+            df_stats['Annual Income (k$)'], 
+            df_stats['Spending Score (1-100)'],
+            c=df_stats['Cluster'],
             cmap='viridis'
         )
         ax.set_xlabel('Age')
@@ -219,7 +263,8 @@ if model is not None and df is not None:
     st.pyplot(fig)
 
 else:
-    st.error("Failed to load model or dataset. Please check your files.")
+    st.error("Failed to load model or dataset. Please check your files and ensure they exist in the correct directory.")
+    st.info("Make sure 'mall_customers.csv' is in the same directory as this app.")
 
 st.sidebar.markdown("---")
 st.sidebar.info("""
