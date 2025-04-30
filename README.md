@@ -1,6 +1,3 @@
-# Customer-segmentation
-
-https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/
 # Customer Segmentation Analysis & Prediction
 
 ![Customer Segmentation](https://img.shields.io/badge/ML-Customer%20Segmentation-brightgreen)
@@ -135,9 +132,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Contact
 
-Your Name - [your-email@example.com](mailto:your-email@example.com)
+Your Name - [your-email@example.com](mailto:your-email@example.co)
 
-Project Link: [https://github.com/yourusername/customer-segmentation-analysis](https://github.com/yourusername/customer-segmentation-analysis)
+Project Link: [https://github.com/yourusername/customer-segmentation-analysis]([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
 
 ---
 
