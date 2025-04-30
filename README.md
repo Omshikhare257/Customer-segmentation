@@ -86,7 +86,7 @@ Example columns:
 ```
 customer_id, age, income, spending_score, purchase_frequency, last_purchase_days, loyalty_points
 ```
-
+or any type of Customer dataset will work no it 
 ## 🔍 How It Works
 
 1. **Data Preprocessing**: 
