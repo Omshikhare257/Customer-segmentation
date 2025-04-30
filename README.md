@@ -128,7 +128,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Contact
 
-Your Name - [your-email@example.com](mailto:your-email@example.co)
+Your Name - [[your-email@example.com](mailto:your-email@example.co)](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/om-shikhare)
 
 Project Link:([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
 
