@@ -12,7 +12,6 @@ https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/
 
 A powerful Streamlit application that performs customer segmentation analysis using machine learning techniques. This tool helps businesses understand their customer base by identifying distinct customer segments and provides actionable marketing recommendations for each segment.
 
-![App Screenshot](https://via.placeholder.com/800x400?text=Customer+Segmentation+App)
 
 ## ✨ Features
 
