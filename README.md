@@ -116,10 +116,6 @@ customer_id, age, income, spending_score, purchase_frequency, last_purchase_days
 - Select different feature combinations for analysis
 - Experiment with different visualization methods
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -134,7 +130,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Your Name - [your-email@example.com](mailto:your-email@example.co)
 
-Project Link: [https://github.com/yourusername/customer-segmentation-analysis]([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
+Project Link:([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
 
 ---
 
