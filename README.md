@@ -126,6 +126,8 @@ or any type of Customer dataset will work no it
 ### 📫 Let's Connect!
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/om-shikhare)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ompythoncode@gmail.com,omjobshikhare@gmail.com)
+
+
 Project Link:([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
 
 ---
