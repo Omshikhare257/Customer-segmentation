@@ -123,10 +123,9 @@ or any type of Customer dataset will work no it
 - Select different feature combinations for analysis
 - Experiment with different visualization methods
 
-## 📞 Contact
-
-Your Name -[https://www.linkedin.com/in/om-shikhare?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app](https://www.linkedin.com/in/om-shikhare?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
-
+### 📫 Let's Connect!
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/om-shikhare)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ompythoncode@gmail.com,omjobshikhare@gmail.com)
 Project Link:([https://github.com/yourusername/customer-segmentation-analysis](https://customer-segmentation-wztbyzzjgxyhzzoesc2vz6.streamlit.app/))
 
 ---
