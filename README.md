@@ -39,7 +39,7 @@ A powerful Streamlit application that performs customer segmentation analysis us
 git clone https://github.com/yourusername/customer-segmentation-analysis.git
 cd customer-segmentation-analysis
 ```
-2.Create a virtual environment (recommended):
+ 2.Create a virtual environment (recommended):
 ```bash
 bashpython -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
