@@ -41,7 +41,10 @@ cd customer-segmentation-analysis
 ```
  2.Create a virtual environment (recommended):
 ```bash
-bashpython -m venv venv
+bashpython:   -m venv venv
+
+activate environment
+
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 3. Install the required packages:
