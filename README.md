@@ -39,18 +39,22 @@ A powerful Streamlit application that performs customer segmentation analysis us
 git clone https://github.com/yourusername/customer-segmentation-analysis.git
 cd customer-segmentation-analysis
 ```
-
-2. Install the required packages:
+2.Create a virtual environment (recommended):
+```bash
+bashpython -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+3. Install the required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the Streamlit app:
+4. Run the Streamlit app:
 ```bash
 streamlit run app.py
 ```
 
-4. Open your browser and go to `http://localhost:8501`
+5. Open your browser and go to `http://localhost:8501`
 
 ## 📝 Usage Guide
 
